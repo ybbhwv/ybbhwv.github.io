@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'display': ['Dancing Script', 'cursive'],
+                    },
+                    colors: {
+                        'rose-gold': '#B76E79',
+                        'light-pink': '#FFF1F2',
+                        'dark-slate': '#334155',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* 为页面添加一个柔和的背景渐变 */
+        body {
+            background-color: #fde2e4;
+            background-image: linear-gradient(135deg, #fde2e4 0%, #ffe5d9 100%);
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div id="app" class="container mx-auto p-4 md:p-8 text-dark-slate">
+
+        <header class="text-center my-12">
+            <h1 class="font-display text-5xl md:text-7xl text-rose-gold">{{ couple.name1 }} & {{ couple.name2 }}</h1>
+            <p class="mt-4 text-lg text-slate-600">Our Unforgettable Love Story</p>
+        </header>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg text-center">
+                <h2 class="text-2xl font-bold text-rose-gold mb-4">我们相爱了</h2>
+                <div class="flex justify-center items-baseline gap-x-3 md:gap-x-5">
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ timeTogether.days }}</span>
+                        <span class="block text-xs text-slate-500">天</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ timeTogether.hours }}</span>
+                        <span class="block text-xs text-slate-500">小时</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ timeTogether.minutes }}</span>
+                        <span class="block text-xs text-slate-500">分钟</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ timeTogether.seconds }}</span>
+                        <span class="block text-xs text-slate-500">秒</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg text-center">
+                <h2 class="text-2xl font-bold text-rose-gold mb-4">距离下一个纪念日</h2>
+                <div class="flex justify-center items-baseline gap-x-3 md:gap-x-5">
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ anniversaryCountdown.days }}</span>
+                        <span class="block text-xs text-slate-500">天</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ anniversaryCountdown.hours }}</span>
+                        <span class="block text-xs text-slate-500">小时</span>
+                    </div>
+                     <div class="text-center">
+                        <span class="text-4xl md:text-5xl font-bold text-slate-700">{{ anniversaryCountdown.minutes }}</span>
+                        <span class="block text-xs text-slate-500">分钟</span>
+                    </div>
+                </div>
+                 <p class="text-sm text-slate-500 mt-4">一周年纪念日：{{ nextAnniversaryDate }}</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="font-display text-4xl md:text-5xl text-rose-gold text-center mb-12">Our Memories</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div v-for="moment in moments" :key="moment.date" 
+                     class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                    <!-- <img :src="moment.image" alt="A lovely moment" class="w-full h-64 object-cover"> -->
+                    <div class="p-6">
+                        <p class="text-sm text-slate-500 mb-2">{{ moment.date }}</p>
+                        <p class="text-slate-700">{{ moment.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 mb-8">
+            <p class="text-slate-500">Made for {{ couple.name1 }} & {{ couple.name2 }}</p>
+        </footer>
+
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        const { createApp, ref, onMounted, computed } = Vue;
+
+        createApp({
+            setup() {
+                // ? =============================================================== ?
+                // ? [重要] 在这里修改为你自己的信息 ?
+                // ? =============================================================== ?
+                
+                // 1. 设置情侣姓名
+                const couple = ref({
+                    name1: '柳津',
+                    name2: '郭盼盼'
+                });
+
+                // 2. 设置恋爱开始的日期和时间 (格式: 年, 月-1, 日, 时, 分, 秒)
+                // 例如: 2022年5月20日13点14分 -> new Date(2022, 4, 20, 13, 14, 0)
+                // 月份是从0开始的，所以5月要写成4
+                const loveStartDate = new Date(2025, 5, 8, 17, 20, 0);
+
+                // 3. 添加你们的精彩瞬间
+                // 建议使用在线图床服务（如 sm.ms, imgur.com）来获取图片链接
+                const moments = ref([
+                    {
+                        date: '2024年7月24日',
+                        description: '我们成为网友，声音和文字通过光和电在我们之间传递。',
+                        image: 'https://images.pexels.com/photos/3181458/pexels-photo-3181458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    },
+                    {
+                        date: '2024年9月7日',
+                        description: '我们第一次见面，路上有风，麦当劳有雪糕。',
+                        image: 'https://images.pexels.com/photos/1450360/pexels-photo-1450360.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    },
+                    {
+                        date: '2024年10月3日',
+                        description: '我们第一次单独见面，走了很长的路，说了很多话。',
+                        image: 'https://images.pexels.com/photos/5405018/pexels-photo-5405018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    },
+                    {
+                        date: '2025年6月8日',
+                        description: '我们在一起了，原来我们是茉莉奶白的味道。',
+                        image: 'https://images.pexels.com/photos/1056251/pexels-photo-1056251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    },
+                    {
+                        date: '未来的每一天',
+                        description: '故事还在继续，我们的爱也永不止息...',
+                        image: 'https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    }
+                ]);
+
+                // ? =============================================================== ?
+                // ? 下面的代码是功能实现，通常不需要修改 ?
+                // ? =============================================================== ?
+
+                const timeTogether = ref({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                const anniversaryCountdown = ref({ days: 0, hours: 0, minutes: 0 });
+                const nextAnniversaryDate = ref('');
+
+                const updateCounters = () => {
+                    const now = new Date();
+                    const diff = now - loveStartDate;
+
+                    // 计算在一起的时间
+                    timeTogether.value.days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    timeTogether.value.hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    timeTogether.value.minutes = Math.floor((diff / 1000 / 60) % 60);
+                    timeTogether.value.seconds = Math.floor((diff / 1000) % 60);
+
+                    // 计算纪念日倒计时
+                    const startMonth = loveStartDate.getMonth();
+                    const startDay = loveStartDate.getDate();
+                    let nextAnniversary = new Date(now.getFullYear(), startMonth, startDay);
+                    
+                    if (now > nextAnniversary) {
+                        nextAnniversary.setFullYear(now.getFullYear() + 1);
+                    }
+                    
+                    nextAnniversaryDate.value = nextAnniversary.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                    const countdownDiff = nextAnniversary - now;
+                    anniversaryCountdown.value.days = Math.floor(countdownDiff / (1000 * 60 * 60 * 24));
+                    anniversaryCountdown.value.hours = Math.floor((countdownDiff / (1000 * 60 * 60)) % 24);
+                    anniversaryCountdown.value.minutes = Math.floor((countdownDiff / 1000 / 60) % 60);
+                };
+                
+                onMounted(() => {
+                    updateCounters();
+                    setInterval(updateCounters, 1000);
+                });
+
+                return {
+                    couple,
+                    moments,
+                    timeTogether,
+                    anniversaryCountdown,
+                    nextAnniversaryDate,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
