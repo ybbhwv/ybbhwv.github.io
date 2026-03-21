@@ -1,0 +1,99 @@
+﻿# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+    name: github
+    repo: ybbhwv/ybbhwv.github.io
+    branch: main
+
+media_folder: /content/images
+public_folder: /content/images
+
+collections:
+    - name: settings
+      label: 站点设置
+      files:
+        - name: site
+          label: 站点信息
+          file: /content/site.json
+          format: json
+          fields:
+            - { name: brand, label: 站点标题, widget: string, required: true }
+            - { name: loginLabel, label: 登录按钮文案, widget: string, required: true }
+            - { name: adminPath, label: CMS 路径, widget: string, required: true, hint: "例如：admin/" }
+            - { name: heroTitlePrefix, label: 首页标题前缀, widget: string, required: true }
+            - { name: heroTitleHighlight, label: 首页标题高亮, widget: string, required: true }
+            - { name: heroDescription, label: 首页描述, widget: text, required: true }
+            - { name: profileLeftImage, label: 左侧头像, widget: image, required: true }
+            - { name: profileLeftAlt, label: 左侧头像描述, widget: string, required: true }
+            - { name: profileRightImage, label: 右侧头像, widget: image, required: true }
+            - { name: profileRightAlt, label: 右侧头像描述, widget: string, required: true }
+            - { name: footerCopy, label: 页脚版权, widget: string, required: true }
+            - { name: footerTagline, label: 页脚副文案, widget: string, required: true }
+        - name: start
+          label: 在一起日期
+          file: /content/start.json
+          format: json
+          fields:
+            - name: date
+              label: 开始日期
+              widget: datetime
+              type: date
+              format: YYYY-MM-DD
+              required: true
+
+    - name: anniversaries
+      label: 纪念日
+      files:
+        - name: anniversary_list
+          label: 纪念日列表
+          file: /content/anniversary.json
+          format: json
+          fields:
+            - name: anniversaries
+              label: 纪念日
+              label_singular: 纪念日
+              widget: list
+              root: true
+              summary: "{{fields.name}} - {{fields.date | date('YYYY-MM-DD')}}"
+              fields:
+                - { name: name, label: 名称, widget: string, required: true }
+                - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
+
+    - name: memories
+      label: 精彩瞬间
+      files:
+        - name: memories_list
+          label: 精彩瞬间列表
+          file: /content/memories.json
+          format: json
+          fields:
+            - name: memories
+              label: 瞬间
+              label_singular: 瞬间
+              widget: list
+              root: true
+              summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
+              fields:
+                - { name: title, label: 标题, widget: string, required: true }
+                - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
+                - { name: description, label: 描述, widget: text, required: true }
+                - { name: image, label: 图片, widget: image, required: true, hint: "文件将保存在 content/images/ 下" }
+
+    - name: timeline
+      label: 时间线
+      files:
+        - name: timeline_events
+          label: 时间线事件
+          file: /content/timeline_events.json
+          format: json
+          fields:
+            - name: timelineEvents
+              label: 事件
+              label_singular: 事件
+              widget: list
+              root: true
+              summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
+              fields:
+                - { name: title, label: 标题, widget: string, required: true }
+                - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
+                - { name: description, label: 描述, widget: text, required: true }

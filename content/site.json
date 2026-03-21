@@ -1,0 +1,14 @@
+{
+    "brand": "爱情时光机",
+    "loginLabel": "登录 CMS",
+    "adminPath": "admin/",
+    "heroTitlePrefix": "我们的",
+    "heroTitleHighlight": "爱情故事",
+    "heroDescription": "记录每一个心动瞬间，珍藏每一份美好回忆。",
+    "profileLeftImage": "content/images/profile-left.svg",
+    "profileLeftAlt": "左侧人物头像",
+    "profileRightImage": "content/images/profile-right.svg",
+    "profileRightAlt": "右侧人物头像",
+    "footerCopy": "© 2026 爱情时光机",
+    "footerTagline": "Made with love for you"
+}

@@ -1,0 +1,38 @@
+[
+    {
+        "title": "第一次相遇",
+        "date": "2020-08-10",
+        "description": "在朋友的聚会上第一次见面，你的笑容让我心动。",
+        "image": "content/images/first-meet.svg"
+    },
+    {
+        "title": "第一次旅行",
+        "date": "2021-03-15",
+        "description": "我们一起去了海边，那天的夕阳特别美。",
+        "image": "content/images/first-trip.svg"
+    },
+    {
+        "title": "生日惊喜",
+        "date": "2021-10-22",
+        "description": "你为我准备的生日惊喜派对，我永远都不会忘记。",
+        "image": "content/images/birthday.svg"
+    },
+    {
+        "title": "周年纪念",
+        "date": "2022-08-10",
+        "description": "庆祝我们在一起的第二年，时间过得真快。",
+        "image": "content/images/anniversary.svg"
+    },
+    {
+        "title": "看星星",
+        "date": "2022-12-05",
+        "description": "半夜开车去山顶看星星，虽然很冷但很浪漫。",
+        "image": "content/images/stargazing.svg"
+    },
+    {
+        "title": "圣诞节",
+        "date": "2022-12-25",
+        "description": "我们一起装饰圣诞树，交换礼物。",
+        "image": "content/images/christmas.svg"
+    }
+]
