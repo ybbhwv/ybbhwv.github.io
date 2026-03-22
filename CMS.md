@@ -6,8 +6,8 @@
 - `content/site.json`：站点基础信息
 - `content/start.json`：开始在一起的日期
 - `content/anniversary.json`：纪念日列表
-- `content/memories.json`：相册内容
-- `content/timeline_events.json`：时间线内容
+- `content/memories/`：精彩瞬间 markdown 内容目录
+- `content/timeline_events/`：时间线 markdown 内容目录
 - `content/images/`：页面与 CMS 使用的图片资源目录
 
 ## 本地预览
@@ -18,19 +18,20 @@
 
 ## CMS 配置
 - 本地开发使用 `local_backend: true`
-- `admin/config.yml` 中的 `backend.repo` 在本地模式下只是占位值，不会连接真实 GitHub
+- `admin/config.yml` 中的 `backend.repo` 会被前端用作 GitHub API 回退读取目录的仓库信息，因此线上仓库应保持公开可读
 - CMS 真正写回本地文件依赖 `decap-server` 代理
 - 如果没有启动 `npx decap-server`，后台里看起来可以编辑，但内容不会写入本地仓库
 
 ## 内容编辑规则
 - 所有日期统一保存为 `YYYY-MM-DD`
 - 纪念日字段：`name`、`date`
-- 精彩瞬间字段：`title`、`date`、`description`、`image`
-- 时间线字段：`title`、`date`、`description`
+- 精彩瞬间 frontmatter 字段：`title`、`date`、`image`，正文作为 `description`
+- 时间线 frontmatter 字段：`title`、`date`，正文作为 `description`
+- `memories` 与 `timeline_events` 文件名使用时间戳排序，前端会按日期升序渲染
 - 图片统一保存在 `content/images/`
 
 ## 发布前检查
-1. 确认 `content/` 下 JSON 结构有效
+1. 确认 `content/memories/` 和 `content/timeline_events/` 下 markdown frontmatter 合法
 2. 确认首页、纪念日、相册、时间线均能正常渲染
 3. 确认 `登录 CMS` 链接指向 `admin/`
 4. 本地测试时确认 `python -m http.server 8000` 与 `npx decap-server` 同时运行

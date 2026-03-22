@@ -5,6 +5,8 @@ backend:
     repo: ybbhwv/ybbhwv.github.io
     branch: master
 
+local_backend: true
+
 media_folder: content/images
 public_folder: /content/images
 
@@ -61,39 +63,29 @@ collections:
 
     - name: memories
       label: 精彩瞬间
-      files:
-        - name: memories_list
-          label: 精彩瞬间列表
-          file: content/memories.json
-          format: json
-          fields:
-            - name: memories
-              label: 瞬间
-              label_singular: 瞬间
-              widget: list
-              root: true
-              summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
-              fields:
-                - { name: title, label: 标题, widget: string, required: true }
-                - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
-                - { name: description, label: 描述, widget: text, required: true }
-                - { name: image, label: 图片, widget: image, required: true, hint: "文件将保存在 content/images/ 下" }
+      label_singular: 瞬间
+      folder: content/memories
+      create: true
+      format: frontmatter
+      extension: md
+      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+      summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
+      fields:
+        - { name: title, label: 标题, widget: string, required: true }
+        - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
+        - { name: image, label: 图片, widget: image, required: true, hint: "文件保存在 content/images/ 下，字段值会自动写入 frontmatter" }
+        - { name: body, label: 描述, widget: text, required: true }
 
     - name: timeline
       label: 时间线
-      files:
-        - name: timeline_events
-          label: 时间线事件
-          file: content/timeline_events.json
-          format: json
-          fields:
-            - name: timelineEvents
-              label: 事件
-              label_singular: 事件
-              widget: list
-              root: true
-              summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
-              fields:
-                - { name: title, label: 标题, widget: string, required: true }
-                - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
-                - { name: description, label: 描述, widget: text, required: true }
+      label_singular: 事件
+      folder: content/timeline_events
+      create: true
+      format: frontmatter
+      extension: md
+      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+      summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
+      fields:
+        - { name: title, label: 标题, widget: string, required: true }
+        - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
+        - { name: body, label: 描述, widget: text, required: true }
