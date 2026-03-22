@@ -245,17 +245,17 @@
                         <p class="text-center text-gray-600 mb-12">爱情路上的重要里程碑</p>
 
                         <div class="relative">
-                            <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-pink-200 hidden md:block"></div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-pink-200"></div>
 
                             <div v-for="(event, index) in timelineEvents" :key="event.title + event.date" :class="['relative mb-8 md:mb-12 flex', index % 2 === 0 ? 'justify-start' : 'justify-end']">
-                                <div class="w-full md:w-5/12">
+                                <div class="w-5/12">
                                     <div :class="['p-6 rounded-2xl shadow-lg', index % 2 === 0 ? 'bg-pink-50' : 'bg-blue-50']">
                                         <h3 class="font-semibold text-lg text-gray-800">{{ event.title }}</h3>
                                         <p class="text-pink-500 text-sm mt-2">{{ formatDate(event.date, 'long') }}</p>
                                         <p class="text-gray-700 mt-3">{{ event.description }}</p>
                                     </div>
                                 </div>
-                                <div class="absolute top-6 w-6 h-6 rounded-full bg-pink-500 border-4 border-white shadow hidden md:block" :class="index % 2 === 0 ? 'right-0 transform translate-x-1/2' : 'left-0 transform -translate-x-1/2'"></div>
+                                <div class="absolute top-6 w-6 h-6 rounded-full bg-pink-500 border-4 border-white shadow" :class="index % 2 === 0 ? 'right-0 transform translate-x-1/2' : 'left-0 transform -translate-x-1/2'"></div>
                             </div>
                         </div>
                     </div>
