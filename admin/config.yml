@@ -3,9 +3,8 @@
 backend:
     name: github
     repo: ybbhwv/ybbhwv.github.io
-    branch: master
-
-local_backend: true
+    branch: main
+    base_url: https://sveltia-cms-auth.306390372.workers.dev
 
 media_folder: content/images
 public_folder: /content/images
