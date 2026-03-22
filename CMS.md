@@ -27,7 +27,7 @@
 - 纪念日字段：`name`、`date`
 - 精彩瞬间 frontmatter 字段：`title`、`date`、`image`，正文作为 `description`
 - 时间线 frontmatter 字段：`title`、`date`，正文作为 `description`
-- `memories` 与 `timeline_events` 文件名使用时间戳排序，前端会按日期升序渲染
+- `memories` 与 `timeline_events` 文件名格式为 `年月日时分秒-标题`，前端会按日期升序渲染
 - 图片统一保存在 `content/images/`
 
 ## 发布前检查
@@ -40,3 +40,4 @@
 - 内容回滚：使用 Git 恢复 `content/` 目录对应历史版本
 - CMS 配置回滚：恢复 `admin/config.yml` 和 `admin/index.html`
 - 页面回滚：恢复 `index.html`
+

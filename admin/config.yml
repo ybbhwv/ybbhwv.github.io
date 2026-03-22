@@ -63,12 +63,12 @@ collections:
 
     - name: memories
       label: 精彩瞬间
-      label_singular: 瞬间
+      label_singular: 精彩瞬间
       folder: content/memories
       create: true
       format: frontmatter
       extension: md
-      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}-{{fields.title}}"
       summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
       fields:
         - { name: title, label: 标题, widget: string, required: true }
@@ -78,14 +78,15 @@ collections:
 
     - name: timeline
       label: 时间线
-      label_singular: 事件
+      label_singular: 时间线
       folder: content/timeline_events
       create: true
       format: frontmatter
       extension: md
-      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+      slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}-{{fields.title}}"
       summary: "{{fields.title}} - {{fields.date | date('YYYY-MM-DD')}}"
       fields:
         - { name: title, label: 标题, widget: string, required: true }
         - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
         - { name: body, label: 描述, widget: text, required: true }
+
