@@ -130,10 +130,20 @@
 
                             <div class="mb-8">
                                 <h2 class="text-3xl title-font text-gray-800 mb-4">我们已经在一起</h2>
-                                <div class="text-4xl md:text-5xl font-bold text-pink-500">
-                                    {{ togetherTime.years }} 年 {{ togetherTime.months }} 月 {{ togetherTime.days }} 天
+                                <div
+                                    class="text-4xl md:text-5xl font-bold text-pink-500 cursor-pointer select-none"
+                                    @click="toggleTogetherTimeDisplay"
+                                >
+                                    <template v-if="showTogetherTimeAsTotalDays">
+                                        {{ togetherTotalDays }} 天
+                                    </template>
+                                    <template v-else>
+                                        {{ togetherTime.years }} 年 {{ togetherTime.months }} 月 {{ togetherTime.days }} 天
+                                    </template>
                                 </div>
-                                <div class="text-gray-500 mt-2">自 {{ formatDate(startDate, 'long') }}</div>
+                                <div class="text-gray-500 mt-2">
+                                    自 {{ formatDate(startDate, 'long') }}
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-3 gap-4 text-center">
@@ -195,9 +205,9 @@
                                 <div class="flex items-start justify-between gap-4 mb-4">
                                     <div>
                                         <h3 class="text-xl font-semibold text-gray-800">纪念日清单</h3>
-                                        <p class="text-gray-500 text-sm mt-1">内容由 Sveltia CMS 管理</p>
+                                        <!-- <p class="text-gray-500 text-sm mt-1">内容由 Sveltia CMS 管理</p> -->
                                     </div>
-                                    <a :href="site.adminPath" class="text-sm text-pink-500 hover:text-pink-600 transition">前往编辑</a>
+                                    <!-- <a :href="site.adminPath" class="text-sm text-pink-500 hover:text-pink-600 transition">前往编辑</a> -->
                                 </div>
 
                                 <div class="space-y-4">
@@ -318,6 +328,8 @@
                     minutes: 0,
                     seconds: 0
                 });
+                const togetherTotalDays = ref(0);
+                const showTogetherTimeAsTotalDays = ref(false);
                 const anniversaryCountdown = reactive({
                     days: 0,
                     hours: 0,
@@ -326,6 +338,10 @@
                 });
 
                 let timerId = null;
+
+                const toggleTogetherTimeDisplay = () => {
+                    showTogetherTimeAsTotalDays.value = !showTogetherTimeAsTotalDays.value;
+                };
 
                 const loadJson = async (path) => {
                     const response = await fetch(path, { cache: "no-store" });
@@ -535,6 +551,7 @@
                     togetherTime.hours = now.getHours();
                     togetherTime.minutes = now.getMinutes();
                     togetherTime.seconds = now.getSeconds();
+                    togetherTotalDays.value = Math.max(0, Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
                 };
 
                 const calculateAnniversaryCountdown = () => {
@@ -604,15 +621,17 @@
                     memories,
                     timelineEvents,
                     togetherTime,
+                    togetherTotalDays,
+                    showTogetherTimeAsTotalDays,
                     anniversaryCountdown,
                     contentState,
                     sortedAnniversaries,
                     nextAnniversary,
-                    formatDate
+                    formatDate,
+                    toggleTogetherTimeDisplay
                 };
             }
         }).mount("#app");
     </script>
 </body>
 </html>
-
