@@ -10,6 +10,11 @@ local_backend: true
 media_folder: content/images
 public_folder: /content/images
 
+app_title: 爱情时光站 | CMS
+logo:
+    src: /assets/favicon.svg
+    show_in_header: true
+
 collections:
     - name: settings
       label: 站点设置
@@ -89,4 +94,3 @@ collections:
         - { name: title, label: 标题, widget: string, required: true }
         - { name: date, label: 日期, widget: datetime, type: date, format: YYYY-MM-DD, required: true }
         - { name: body, label: 描述, widget: text, required: true }
-
