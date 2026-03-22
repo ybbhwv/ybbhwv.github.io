@@ -297,7 +297,7 @@
                 const contentRepo = {
                     owner: "ybbhwv",
                     repo: "ybbhwv.github.io",
-                    branch: "master"
+                    branch: "main"
                 };
                 const site = reactive({
                     brand: "爱情时光机",
@@ -414,6 +414,10 @@
                     };
                 };
 
+                const isLocalPreview = () => {
+                    return ["localhost", "127.0.0.1"].includes(window.location.hostname) || window.location.protocol === "file:";
+                };
+
                 const listCollectionEntriesFromDirectory = async (directory) => {
                     try {
                         const response = await fetch(`${directory}/`, { cache: "no-store" });
@@ -447,35 +451,65 @@
                         );
 
                         if (!response.ok) {
-                            return [];
+                            let reason = `GitHub API HTTP ${response.status}`;
+                            try {
+                                const payload = await response.json();
+                                if (payload && typeof payload.message === "string" && payload.message) {
+                                    reason = `${reason}: ${payload.message}`;
+                                }
+                            } catch (error) {
+                                // Ignore response parsing failures and keep the status-based reason.
+                            }
+
+                            return {
+                                entries: [],
+                                reason
+                            };
                         }
 
                         const payload = await response.json();
                         if (!Array.isArray(payload)) {
-                            return [];
+                            return {
+                                entries: [],
+                                reason: "GitHub API returned non-directory data."
+                            };
                         }
 
-                        return payload
-                            .filter((item) => item && item.type === "file" && typeof item.name === "string" && item.name.endsWith(".md"))
-                            .map((item) => item.name)
-                            .sort();
+                        return {
+                            entries: payload
+                                .filter((item) => item && item.type === "file" && typeof item.name === "string" && item.name.endsWith(".md"))
+                                .map((item) => item.name)
+                                .sort(),
+                            reason: ""
+                        };
                     } catch (error) {
-                        return [];
+                        return {
+                            entries: [],
+                            reason: error instanceof Error ? error.message : "GitHub API request failed."
+                        };
                     }
                 };
 
                 const listCollectionEntries = async (directory) => {
+                    if (isLocalPreview()) {
+                        const localEntries = await listCollectionEntriesFromDirectory(directory);
+                        if (localEntries.length > 0) {
+                            return localEntries;
+                        }
+                    }
+
+                    const remoteResult = await listCollectionEntriesFromGitHub(directory);
+                    if (remoteResult.entries.length > 0) {
+                        return remoteResult.entries;
+                    }
+
                     const localEntries = await listCollectionEntriesFromDirectory(directory);
                     if (localEntries.length > 0) {
                         return localEntries;
                     }
 
-                    const remoteEntries = await listCollectionEntriesFromGitHub(directory);
-                    if (remoteEntries.length > 0) {
-                        return remoteEntries;
-                    }
-
-                    throw new Error(`无法读取 ${directory} 目录内容，请确认静态服务器目录可访问，或仓库 ${contentRepo.owner}/${contentRepo.repo} 可公开读取。`);
+                    const reasonSuffix = remoteResult.reason ? ` GitHub API error: ${remoteResult.reason}` : "";
+                    throw new Error(`Unable to read ${directory}. Confirm repository ${contentRepo.owner}/${contentRepo.repo} branch ${contentRepo.branch} is publicly accessible.${reasonSuffix}`);
                 };
 
                 const loadMarkdownCollection = async (directory) => {
