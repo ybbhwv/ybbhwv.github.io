@@ -12,14 +12,15 @@
 
 ## 本地预览
 1. 在仓库根目录运行 `python -m http.server 8000`
-2. 访问 `http://localhost:8000/` 查看页面
-3. 访问 `http://localhost:8000/admin/` 打开 CMS
+2. 另开一个终端运行 `npx decap-server`
+3. 访问 `http://localhost:8000/` 查看页面
+4. 访问 `http://localhost:8000/admin/` 打开 CMS
 
 ## CMS 配置
-- 当前配置采用 Git-based 工作流，分支固定为 `master`
-- `admin/config.yml` 中的 `backend.repo` 已设为 `liujin/liujin.fallsky.cn`
-- 这个值来自当前本地 Git 用户名 `liujin` 与仓库目录名 `liujin.fallsky.cn`
-- 如果你的真实 GitHub 仓库不是这个地址，请把 `backend.repo` 改成实际的 `owner/repo`
+- 本地开发使用 `local_backend: true`
+- `admin/config.yml` 中的 `backend.repo` 在本地模式下只是占位值，不会连接真实 GitHub
+- CMS 真正写回本地文件依赖 `decap-server` 代理
+- 如果没有启动 `npx decap-server`，后台里看起来可以编辑，但内容不会写入本地仓库
 
 ## 内容编辑规则
 - 所有日期统一保存为 `YYYY-MM-DD`
@@ -32,7 +33,7 @@
 1. 确认 `content/` 下 JSON 结构有效
 2. 确认首页、纪念日、相册、时间线均能正常渲染
 3. 确认 `登录 CMS` 链接指向 `admin/`
-4. 确认 `admin/config.yml` 中的仓库信息与生产环境一致
+4. 本地测试时确认 `python -m http.server 8000` 与 `npx decap-server` 同时运行
 
 ## 回滚方式
 - 内容回滚：使用 Git 恢复 `content/` 目录对应历史版本

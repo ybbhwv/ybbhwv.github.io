@@ -3,9 +3,9 @@
 backend:
     name: github
     repo: ybbhwv/ybbhwv.github.io
-    branch: main
+    branch: master
 
-media_folder: /content/images
+media_folder: content/images
 public_folder: /content/images
 
 collections:
@@ -14,7 +14,7 @@ collections:
       files:
         - name: site
           label: 站点信息
-          file: /content/site.json
+          file: content/site.json
           format: json
           fields:
             - { name: brand, label: 站点标题, widget: string, required: true }
@@ -31,7 +31,7 @@ collections:
             - { name: footerTagline, label: 页脚副文案, widget: string, required: true }
         - name: start
           label: 在一起日期
-          file: /content/start.json
+          file: content/start.json
           format: json
           fields:
             - name: date
@@ -46,7 +46,7 @@ collections:
       files:
         - name: anniversary_list
           label: 纪念日列表
-          file: /content/anniversary.json
+          file: content/anniversary.json
           format: json
           fields:
             - name: anniversaries
@@ -64,7 +64,7 @@ collections:
       files:
         - name: memories_list
           label: 精彩瞬间列表
-          file: /content/memories.json
+          file: content/memories.json
           format: json
           fields:
             - name: memories
@@ -84,7 +84,7 @@ collections:
       files:
         - name: timeline_events
           label: 时间线事件
-          file: /content/timeline_events.json
+          file: content/timeline_events.json
           format: json
           fields:
             - name: timelineEvents
